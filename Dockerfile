@@ -4,9 +4,10 @@ FROM golang:1.21-alpine AS builder
 # Instalar git para clonar el repositorio
 RUN apk add --no-cache git
 
-# Solicitar el código del proyecto vía HTTPS directamente al repositorio remoto
-# NOTA: Reemplaza la URL por la liga HTTPS real de tu repositorio
-RUN git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git /codigo-fuente
+# Intentar clonar desde GitHub, si falla intentar con GitLab, y como último recurso BitBucket
+RUN git clone https://github.com/Jonathan-Meixueiro/reto-docker-git.git /codigo-fuente || \
+    git clone https://gitlab.com/a240694/reto-docker-git.git /codigo-fuente || \
+    git clone https://bitbucket.org/jonamx13/reto-docker-git.git /codigo-fuente
 
 # Establecer el directorio de trabajo donde se descargó el código
 WORKDIR /codigo-fuente
